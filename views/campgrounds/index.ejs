@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+    <%# This is from the ejs-mate package which gives boilerplate code from layouts/boilerplate.ejs in the views folder
+        %>
+        <h1>All Campgrounds</h1>
+        <h2><a href="/campgrounds/new">Add A Campground</a></h2>
+
+        <% for(let campground of campgrounds) {%>
+            <%# iterates over the { campgrounds } variable in the index.js file%>
+                <div class="card" mb-3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="img-fluid" src=" <%=campground.image%>" alt="">
+                        </div>
+                        <div class="cold-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= campground.title%>
+                                </h5>
+                                <p class="card-text">
+                                    <%=campground.description%>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text muted">
+                                        <%=campground.location%>/small>
+                                </p>
+                                <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>">
+                                    <%# the anchor tag will take the user to /campgrounds/the id of the campground. Also
+                                        displays the campground titles to click onto%>
+                                        View <%=campground.title%>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <%}%>

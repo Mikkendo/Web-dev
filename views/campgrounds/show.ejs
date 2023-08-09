@@ -1,0 +1,109 @@
+<% layout('layouts/boilerplate') %>
+    <%# This is from the ejs-mate package which gives boilerplate code from layouts/boilerplate.ejs in the views folder
+        %>
+        <div class="row">
+            <div class="col-6 ">
+                <div class="card mb-3" style="width: 100%;">
+                    <img src="<%=campground.image%>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%=campground.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%=campground.description%>
+                        </p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <%=campground.location%>
+                        </li>
+                        <li class="list-group-item">Submitted by
+                            <%=campground.author.username%>
+                        </li>
+                        <li class="list-group-item">£<%=campground.price%> per night</li>
+
+                    </ul>
+                    <%if(currentUser && campground.author.equals(currentUser._id)) {%>
+                        <%# if there is a currentUser and also if campground.author is equal to the currentUser_id then
+                            display the edit and delete button, this makes sure that only the author of the campground
+                            can delete or edit the campground%>
+                            <%#mongoose.equals() method is used to compare %>
+                                <div class="card-body">
+                                    <a href="/campgrounds/<%= campground._id%>/edit"
+                                        class="card-link btn btn-info mb-3">Click to
+                                        edit</a>
+                                    <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE"
+                                        method="POST">
+                                        <%#campground._id is the unique id that is given to a document when it is
+                                            entered into MongoDB%>
+                                            <button class="btn btn-danger">Delete Campground</button>
+                                            <%#the Button submits the delete request in the form%>
+                                    </form>
+                                    <%#Form for delete. Uses method-override npm package to be able to change the method
+                                        to delete%>
+                                </div>
+                                <%}%>
+
+
+                                    <div class="card-footer text-body-secondary">
+                                        <a href="/campgrounds">Click to go back to campgrounds</a>
+                                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-6">
+                <h2>Leave a review</h2>
+                <%# From boilerplate.ejs in the layouts folder , we write noValidate meaning that we do not use the html
+                    validation and instead use the bootstrap validation using class=validated-form%>
+                    <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="validated-form"
+                        novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="rating">Rating</label>
+                            <input class="form-range" type="range" name="review[rating]" min="1" max="5" id="rating">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="body">Review</label>
+                            <%# name="review[body] is using the body parser app.use(express.urlencoded({ extended: true })), The body parser
+                            basically takes whatever inside of square brackets and makes a property with that name. So if
+                            you submit the review form, the req.body will look something like this.%> 
+                            <%# { " review" : { "rating" : "4" , "body" : "This is not done" } }%>
+                                <%# When the form is submitted, the server-side code will receive the data as
+                                    req.body.By using "review[body]" as the name attribute syntax, the data will be
+                                    processed and structured so you can access it via req.body.review %>
+                                    <%#Using this approach, you can directly access the review object by calling
+                                        req.body.review, and access the individual properties with req.body.review.body
+                                        This allows for cleaner and more manageable code.%>
+                                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
+                                            required></textarea>
+                                        <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <button class="btn btn-success mb-3">Submit review</button>
+                    </form>
+                    <div class="mb-3">
+                        <%for(let review of campground.reviews) {%>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Rating:<%=review.rating%>
+                                    </h5>
+                                    <p class="card-text">
+                                        Review:<%=review.body%>
+                                    </p>
+                                    <%#For each review make a serperate form that will delete the review ,also uses
+                                        method override so we can do a DELETE request on our html form since html forms
+                                        do not do DELETE request%>
+                                        <form
+                                            action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                            method="POST">
+                                            <button class="btn btn-sm btn-danger">Delete Review</button>
+                                        </form>
+                                </div>
+
+                            </div>
+
+                            <%}%>
+
+                    </div>
+            </div>
+        </div>

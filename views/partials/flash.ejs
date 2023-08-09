@@ -1,0 +1,19 @@
+<%#Uses bootstrap to style the flash message from the connect-flash npm package%>
+    <%#If there is a success and if success has a length because if it doesn't then it would be considered false, if
+        both conditions are met then use the success flash message , we put this in a if statement otherwise there will
+        constantly be a green success bar on our pages%>
+        <%if(success && success.length) {%>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%=success%>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <%}%>
+
+                <%#Similiar to the code this is for flashing an error message %>
+                    <%if(error && error.length) {%>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <%=error%>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                        <%}%>

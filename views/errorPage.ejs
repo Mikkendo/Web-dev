@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate') %>
+    <%# This is from the ejs-mate package which gives boilerplate code from layouts/boilerplate.ejs in the views folder
+        %>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Something went wrong...</h4>
+                    <p>
+                        <%=err.message%>
+                    </p>
+                    <p>
+                        <%=err.stack%>
+                    </p>
+                </div>
+            </div>
+        </div>
